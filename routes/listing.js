@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js"); // Keep this in code
 const Listing = require("../models/listing.js");
-const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
+const { isLoggedIn, isOwner, validateListing, isReviewAuthor } = require("../middleware.js");
 
 // Index Route
 router.get("/", async (req, res, next) => {
@@ -25,14 +25,17 @@ router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const listing = await Listing.findById(id)
-      .populate("reviews")
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "author",
+        },
+      })
       .populate("owner");
     if (!listing) {
       req.flash("error", "Listing you requested for does not exist!");
       res.redirect("/listings");
     }
-    console.log(listing.owner);
-    console.log(listing.owner.username);
     res.render("listings/show.ejs", { listing });
   } catch (err) {
     console.log(err);
@@ -74,25 +77,31 @@ router.get("/:id/edit", isLoggedIn, isOwner, async (req, res, next) => {
 });
 
 // Update Route
-router.put("/:id", isLoggedIn, isOwner, validateListing, async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    let listing = await Listing.findById(id, { ...req.body.listing }).populate(
-      "owner"
-    );
-    if (!listing.owner._id.equals(res.locals.currUser._id)) {
-      req.flash("error", "You don't have permission to edit");
-      return res.redirect(`/listings/${id}`);
-    }
+router.put(
+  "/:id",
+  isLoggedIn,
+  isOwner,
+  validateListing,
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      let listing = await Listing.findById(id, {
+        ...req.body.listing,
+      }).populate("owner");
+      if (!listing.owner._id.equals(res.locals.currUser._id)) {
+        req.flash("error", "You don't have permission to edit");
+        return res.redirect(`/listings/${id}`);
+      }
 
-    await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-    req.flash("success", "Listing updated successfully!");
-    res.redirect(`/listings/${id}`);
-  } catch (err) {
-    console.log(err);
-    next(err);
+      await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+      req.flash("success", "Listing updated successfully!");
+      res.redirect(`/listings/${id}`);
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
   }
-});
+);
 
 // Delete Route
 router.delete("/:id", isLoggedIn, isOwner, async (req, res, next) => {
