@@ -4,6 +4,7 @@ const wrapAsync = require("../utils/wrapAsync.js"); // Keep this in code
 const { listingSchema, reviewSchema } = require("../schema.js");
 const ExpressError = require("../utils/ExpressError.js");
 const Listing = require("../models/listing.js");
+const { isLoggedIn } = require("../middleware.js");
 
 const validateListing = (req, res, next) => {
   let { error } = listingSchema.validate(req.body);
@@ -26,7 +27,8 @@ router.get("/", async (req, res, next) => {
 });
 
 // New Route
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
+  console.log(req.user);
   res.render("listings/new.ejs");
 });
 
@@ -35,7 +37,7 @@ router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const listing = await Listing.findById(id).populate("reviews");
-    if(!listing) {
+    if (!listing) {
       req.flash("error", "Listing you requested for does not exist!");
       res.redirect("/listings");
     }
@@ -46,23 +48,28 @@ router.get("/:id", async (req, res, next) => {
 });
 
 // Create Route
-router.post("/", async (req, res, next) => {
-  try {
-    const newListing = new Listing(req.body.listing);
-    await newListing.save();
-    req.flash("success", "New Listing Created!");
-    res.redirect("/listings");
-  } catch (err) {
-    next(err);
-  }
-});
+router.post(
+  "/",
+  isLoggedIn,
+  validateListing,
+  wrapAsync(async (req, res, next) => {
+    try {
+      const newListing = new Listing(req.body.listing);
+      await newListing.save();
+      req.flash("success", "New Listing Created!");
+      res.redirect("/listings");
+    } catch (err) {
+      next(err);
+    }
+  })
+);
 
 // Edit Route
-router.get("/:id/edit", async (req, res, next) => {
+router.get("/:id/edit", isLoggedIn, async (req, res, next) => {
   try {
     const { id } = req.params;
     const listing = await Listing.findById(id);
-    if(!listing) {
+    if (!listing) {
       req.flash("error", "Listing you requested for does not exist!");
       res.redirect("/listings");
     }
@@ -73,7 +80,7 @@ router.get("/:id/edit", async (req, res, next) => {
 });
 
 // Update Route
-router.put("/:id", validateListing, async (req, res, next) => {
+router.put("/:id", isLoggedIn, validateListing, async (req, res, next) => {
   try {
     const { id } = req.params;
     let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
@@ -85,7 +92,7 @@ router.put("/:id", validateListing, async (req, res, next) => {
 });
 
 // Delete Route
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", isLoggedIn, async (req, res, next) => {
   const { id } = req.params;
   const deletedListing = await Listing.findByIdAndDelete(id);
   req.flash("success", "Listing deleted successfully!");
