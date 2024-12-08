@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const Listings = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
@@ -78,6 +77,7 @@ app.all("*", (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  console.log(err);
   const { statusCode = 500, message = "Something went wrong!" } = err;
   res.status(statusCode).render("error.ejs", { err });
   // res.status(statusCode).send(message);
