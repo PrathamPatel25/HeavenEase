@@ -4,7 +4,13 @@
   <div class="col-8 offset-2">
     <h3>Create a New Listing</h3>
     <!-- class="needs-validation" novalidate -->
-    <form method="POST" action="/listings">
+    <form
+      method="POST"
+      action="/listings"
+      novalidate
+      class="needs-validation"
+      enctype="multipart/form-data"
+    >
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input
@@ -14,26 +20,26 @@
           class="form-control"
           required
         />
-        <div class="valid-feedback">
-          Title Looks good!
-        </div>
+        <div class="valid-feedback">Title Looks good!</div>
       </div>
 
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
-        <textarea name="listing[description]" class="form-control" required></textarea>
-        <div class="invalid-feedback">
-          Please enter a short description
-        </div>
+        <textarea
+          name="listing[description]"
+          class="form-control"
+          required
+        ></textarea>
+        <div class="invalid-feedback">Please enter a short description</div>
       </div>
 
       <div class="mb-3">
-        <label for="image" class="form-label">Image Link</label>
+        <label for="image" class="form-label">Upload Listing Image</label>
         <input
-          name="listing[image]"
-          placeholder="Enter image URL/Link"
-          type="text"
+          type="file"
           class="form-control"
+          name="listing[image]"
+          required
         />
       </div>
 
@@ -46,11 +52,9 @@
             class="form-control"
             required
           />
-          <div class="invalid-feedback">
-            Price should be valid
-          </div>
+          <div class="invalid-feedback">Price should be valid</div>
         </div>
-  
+
         <div class="mb-3 col-md-8">
           <label for="country" class="form-label">Country</label>
           <input
@@ -60,9 +64,7 @@
             class="form-control"
             required
           />
-          <div class="invalid-feedback">
-            Country name should be valid
-          </div>
+          <div class="invalid-feedback">Country name should be valid</div>
         </div>
       </div>
 
@@ -75,13 +77,10 @@
           class="form-control"
           required
         />
-        <div class="invalid-feedback">
-          Location should be valid
-        </div>
+        <div class="invalid-feedback">Location should be valid</div>
       </div>
 
       <button class="btn btn-dark add-btn mb-3">Add</button>
     </form>
   </div>
 </div>
-
