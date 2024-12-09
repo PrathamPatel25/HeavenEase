@@ -51,7 +51,11 @@ module.exports.renderEditForm = async (req, res) => {
       req.flash("error", "Listing you requested for does not exist!");
       res.redirect("/listings");
     }
-    res.render("listings/edit.ejs", { listing });
+
+    let originalImageUrl = listing.image.url;
+    originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250");
+
+    res.render("listings/edit.ejs", { listing, originalImageUrl });
   } catch (err) {
     next(err);
   }
@@ -59,17 +63,17 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateListing = async (req, res) => {
   try {
-    const { id } = req.params;
-    let listing = await Listing.findById(id, {
-      ...req.body.listing,
-    }).populate("owner");
-    if (!listing.owner._id.equals(res.locals.currUser._id)) {
-      req.flash("error", "You don't have permission to edit");
-      return res.redirect(`/listings/${id}`);
+    let { id } = req.params;
+    let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+
+    if (typeof req.file !== "undefined") {
+      let url = req.file.path;
+      let filename = req.file.filename;
+      listing.image = { url, filename };
+      await listing.save();
     }
 
-    await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-    req.flash("success", "Listing updated successfully!");
+    req.flash("success", "Listing Updated");
     res.redirect(`/listings/${id}`);
   } catch (err) {
     console.log(err);
