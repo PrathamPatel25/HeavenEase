@@ -81,17 +81,17 @@ module.exports.updateListing = async (req, res) => {
   }
 };
 
-// module.exports.filterListings = async (req, res, next) => {
-//     const { q } = req.params;
-//     const filteredListings = await Listing.find({category: q }).exec();
-//     if (!filteredListings.length) {
-//         req.flash("error", "No Listings exists for this filter!");
-//         res.redirect("/listings");
-//         return;
-//     }
-//     res.locals.success = `Listings Filtered by ${q}`;
-//     res.render("listings/index.ejs", { allListings: filteredListings });
-// }
+module.exports.filterListings = async (req, res, next) => {
+  const { q } = req.params;
+  const filteredListings = await Listing.find({ category: q }).exec();
+  if (!filteredListings.length) {
+    req.flash("error", "No Listings exists for this filter!");
+    res.redirect("/listings");
+    return;
+  }
+  res.locals.success = `Listings Filtered by ${q}`;
+  res.render("listings/index.ejs", { allListings: filteredListings });
+};
 
 module.exports.destroyListing = async (req, res) => {
   let { id } = req.params;
