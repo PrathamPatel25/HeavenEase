@@ -23,7 +23,14 @@ module.exports.showListing = async (req, res) => {
     req.flash("error", "Listing you requested for does not exist!");
     res.redirect("/listings");
   }
-  res.render("listings/show.ejs", { listing });
+  const today = new Date();
+  const checkin = `${(today.getDate() + 10) % 30}/${
+    today.getMonth() + 1
+  }/${today.getFullYear()}`;
+  const checkout = `${(today.getDate() + 15) % 30}/${
+    today.getMonth() + 1
+  }/${today.getFullYear()}`;
+  res.render("listings/show.ejs", { listing, checkin, checkout });
 };
 
 module.exports.createListing = async (req, res, next) => {

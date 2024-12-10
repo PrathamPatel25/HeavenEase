@@ -65,7 +65,7 @@ body {
 }
 
 .card-img-top {
-  border-radius: 1rem !important;
+  /* border-radius: 1rem !important; */
   width: 100% !important;
   object-fit: cover !important;
 }
@@ -100,7 +100,7 @@ body {
 
 /*show page*/
 .show-img {
-  height: 30vh;
+  height: 60vh;
 }
 
 .show-btns {
@@ -115,6 +115,10 @@ body {
 .show-card {
   padding-left: 0;
   padding-right: 0;
+}
+
+.review-card {
+  padding: 1rem 0 0 1rem;
 }
 
 /*Filter*/
