@@ -99,13 +99,22 @@ body {
 }
 
 /*show page*/
-.show-image {
+.show-img {
   height: 30vh;
 }
 
 .show-btns {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+}
+
+.btns a {
+  text-decoration: none;
+}
+
+.show-card {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /*Filter*/
