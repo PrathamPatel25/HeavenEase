@@ -121,6 +121,15 @@ body {
   position: relative;
 }
 
+.scrollable-tabs-container svg {
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  pointer-events: auto;
+}
+
 .scrollable-tabs-container .filter-container {
   display: flex;
   overflow-x: scroll;
@@ -139,6 +148,38 @@ body {
 
 .scrollable-tabs-container .filter-container::-webkit-scrollbar {
   display: none;
+}
+
+.scrollable-tabs-container .right-arrow,
+.scrollable-tabs-container .left-arrow {
+  position: absolute;
+  height: 100%;
+  width: 100px;
+  top: 0;
+  display: none;
+  align-items: center;
+  padding: 0 10px;
+  pointer-events: none;
+}
+
+.scrollable-tabs-container .right-arrow.active,
+.scrollable-tabs-container .left-arrow.active {
+  display: flex;
+}
+
+.scrollable-tabs-container .right-arrow {
+  right: 0;
+  background: linear-gradient(to left, #fff 50%, transparent);
+  justify-content: flex-end;
+}
+
+.scrollable-tabs-container .left-arrow {
+  background: linear-gradient(to right, #fff 50%, transparent);
+  z-index: 9;
+}
+
+.scrollable-tabs-container svg:hover {
+  background-color: #ddd;
 }
 
 .scrollable-tabs-container a {

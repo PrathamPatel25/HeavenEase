@@ -2,6 +2,22 @@
 <body>
   <div id="filters">
     <div class="scrollable-tabs-container">
+      <div class="left-arrow">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15.75 19.5 8.25 12l7.5-7.5"
+          />
+        </svg>
+      </div>
       <div class="filter-container">
         <a class="filter active" href="/listings">
           <div><i class="fa-solid fa-house"></i></div>
@@ -52,6 +68,22 @@
           <p>Boats</p>
         </a>
       </div>
+      <div class="right-arrow active">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="{1.5}"
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m8.25 4.5 7.5 7.5-7.5 7.5"
+          />
+        </svg>
+      </div>
     </div>
 
     <div class="tax-toggle">
@@ -96,6 +128,11 @@
 
 <script>
   let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+
+  taxSwitch.addEventListener("change", () => {
+    updatePriceDisplay(taxSwitch.checked);
+  });
+
   taxSwitch.addEventListener("click", () => {
     let taxInfo = document.getElementsByClassName("tax-info");
     for (info of taxInfo) {
@@ -105,5 +142,115 @@
         info.style.display = "none";
       }
     }
+  });
+
+  const tabs = document.querySelectorAll(
+    ".scrollable-tabs-container .filter-container a"
+  );
+  const rightArrow = document.querySelector(
+    ".scrollable-tabs-container .right-arrow svg"
+  );
+  const leftArrow = document.querySelector(
+    ".scrollable-tabs-container .left-arrow svg"
+  );
+  const filterContainer = document.querySelector(
+    ".scrollable-tabs-container .filter-container"
+  );
+  const leftArrowContainer = document.querySelector(
+    ".scrollable-tabs-container .left-arrow"
+  );
+  const rightArrowContainer = document.querySelector(
+    ".scrollable-tabs-container .right-arrow"
+  );
+
+  const removeAllActiveClasses = () => {
+    tabs.forEach((tab) => {
+      tab.classList.remove("active");
+    });
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", (event) => {
+      event.preventDefault();
+      setActiveFilter(tab);
+      window.location.href = tab.getAttribute("href");
+    });
+  });
+
+  const setActiveFilter = (tab) => {
+    removeAllActiveClasses();
+    tab.classList.add("active");
+    localStorage.setItem("activeFilter", tab.getAttribute("href"));
+  };
+
+  // Check if there's a stored active filter and set it on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    const storedFilter = localStorage.getItem("activeFilter");
+    if (storedFilter) {
+      const activeTab = document.querySelector(
+        `.filter[href="${storedFilter}"]`
+      );
+      if (activeTab) {
+        setActiveFilter(activeTab);
+      }
+    }
+  });
+
+  const manageIcons = () => {
+    if (filterContainer.scrollLeft >= 20) {
+      leftArrowContainer.classList.add("active");
+    } else {
+      leftArrowContainer.classList.remove("active");
+    }
+
+    let maxScrollValue =
+      filterContainer.scrollWidth - filterContainer.clientWidth - 20;
+    // console.log("scroll width: " + filterContainer.scrollWidth);
+    // console.log("client width: " + filterContainer.clientWidth);
+    // console.log("max scroll value: " + maxScrollValue);
+    // console.log("scroll left value: " + filterContainer.scrollLeft);
+
+    if (filterContainer.scrollLeft >= maxScrollValue) {
+      rightArrowContainer.classList.remove("active");
+    } else {
+      rightArrowContainer.classList.add("active");
+    }
+  };
+
+  rightArrow.addEventListener("click", () => {
+    console.log("clicked");
+    filterContainer.scrollLeft += 200;
+    setTimeout(() => {
+      manageIcons();
+    }, 500);
+  });
+
+  leftArrow.addEventListener("click", () => {
+    console.log("clicked");
+    filterContainer.scrollLeft -= 200;
+    setTimeout(() => {
+      manageIcons();
+    }, 500);
+  });
+
+  filterContainer.addEventListener("scroll", manageIcons);
+
+  let dragging = false;
+
+  const drag = (e) => {
+    if (!dragging) return;
+    filterContainer.classList.add("dragging");
+    filterContainer.scrollLeft -= e.movementX;
+  };
+
+  filterContainer.addEventListener("mousedown", () => {
+    dragging = true;
+  });
+
+  filterContainer.addEventListener("mousemove", drag);
+
+  document.addEventListener("mouseup", () => {
+    dragging = false;
+    filterContainer.classList.remove("dragging");
   });
 </script>
