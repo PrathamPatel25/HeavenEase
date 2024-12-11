@@ -16,7 +16,7 @@ body {
 }
 
 .fa-compass {
-  color: #fe424d;
+  color: #0070bb;
   font-size: 2rem;
 }
 
@@ -24,7 +24,181 @@ body {
   color: #222222 !important; /*overwrite bootstrap style*/
 }
 
-/*footer*/
+/*cards*/
+.listing-card {
+  border: none !important;
+  margin-bottom: 2rem;
+}
+
+.listing-box {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.listing-box:hover {
+  transform: scale(1.01);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border-color: #007bff;
+}
+
+.listing-box:hover img {
+  filter: brightness(1.1);
+  transition: filter 0.3s ease;
+}
+
+.card-img-top {
+  /* border-radius: 1rem !important; */
+  width: 100% !important;
+  object-fit: cover !important;
+}
+
+.card-body {
+  height: 5rem;
+  padding: 0.4rem 0 0 0.5rem !important;
+}
+
+.card-text p {
+  font-weight: 400;
+}
+
+.listing-link {
+  color: #222222;
+  text-decoration: none;
+}
+
+/* Card Effect */
+.card-img-overlay:hover {
+  opacity: 0.2;
+  background-color: white;
+}
+
+.add-btn {
+  background-color: #0070bb !important;
+  border: none !important;
+}
+
+/* Show Page */
+.show-img {
+  height: 60vh;
+}
+
+.show-btns {
+  display: flex;
+  flex-direction: row;
+}
+
+.btns a {
+  text-decoration: none;
+}
+
+.show-card {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.review-card {
+  padding: 1rem 0 0 1rem;
+}
+
+/* Layout for Listing Images */
+#listing_image {
+  display: flex;
+}
+
+#listing_image .main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+#listing_image .side-img {
+  width: 100%;
+  height: 100%; /* Fixed height for smaller images */
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.main-img,
+.side-img {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Section */
+.card-body {
+  height: 100%;
+  position: relative;
+}
+
+/* Sticky Card */
+.col-md-4 {
+  border: 0.1px solid rgb(194, 189, 189);
+  border-radius: 1rem;
+  margin-left: 6rem;
+  height: 80vh;
+  position: sticky;
+  top: 125px;
+  transform: translateY(0);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+  padding: 2rem;
+  overflow-y: auto;
+  height: 100%;
+}
+
+/* Date Section */
+.date {
+  height: 5rem;
+  border: 0.1px solid rgb(194, 189, 189);
+  border-radius: 1rem;
+  margin-top: 2rem;
+}
+
+.date .col-md-6 {
+  padding: 0.5rem 0 0 1rem;
+}
+
+.date .col-md-6:first-child {
+  border-right: 0.1px solid rgb(194, 189, 189);
+}
+
+.date .col-md-6:last-child {
+  border-left: 0.1px solid rgb(194, 189, 189);
+}
+
+/* Reserve Section */
+.reserve {
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.reserve .btn {
+  width: 20vw;
+  height: 10vh;
+}
+
+/* Show Buttons */
+.show-btns div {
+  margin-left: 20px;
+}
+
+/* Reviews Section */
+.reviews {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+/* Footer */
 .f-info-links a {
   text-decoration: none;
   color: #222222;
@@ -56,69 +230,6 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   align-items: space-evenly;
-}
-
-/*cards*/
-.listing-card {
-  border: none !important;
-  margin-bottom: 2rem;
-}
-
-.card-img-top {
-  /* border-radius: 1rem !important; */
-  width: 100% !important;
-  object-fit: cover !important;
-}
-
-.card-body {
-  padding: 0 !important;
-}
-
-.card-text p {
-  font-weight: 400;
-}
-
-.listing-link {
-  color: #222222;
-  text-decoration: none;
-}
-
-/* Card Effect */
-.card-img-overlay {
-  opacity: 0;
-}
-
-.card-img-overlay:hover {
-  opacity: 0.2;
-  background-color: white;
-}
-
-.add-btn {
-  background-color: #fe424d !important;
-  border: none !important;
-}
-
-/*show page*/
-.show-img {
-  height: 60vh;
-}
-
-.show-btns {
-  display: flex;
-  flex-direction: row;
-}
-
-.btns a {
-  text-decoration: none;
-}
-
-.show-card {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.review-card {
-  padding: 1rem 0 0 1rem;
 }
 
 /*Filter*/
@@ -214,13 +325,13 @@ body {
 .filter:hover {
   opacity: 1;
   cursor: pointer;
-  border-bottom: 2.5px solid #fe424d;
-  color: #fe424d;
+  border-bottom: 2.5px solid #0070bb;
+  color: #0070bb;
 }
 
 .scrollable-tabs-container .filter-container a.active {
-  border-bottom: 2.5px solid #fe424d;
-  color: #fe424d;
+  border-bottom: 2.5px solid #0070bb;
+  color: #0070bb;
   opacity: 1;
 }
 

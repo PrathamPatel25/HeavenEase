@@ -5,20 +5,46 @@
     <h3><%= listing.title %></h3>
   </div>
   <div class="card col-md-12 show-card listing-card">
-    <div id="listing_image" class="mb-5 row g-0">
+    <div id="listing_image" class="row g-0" style="margin-bottom: 3rem">
+      <!-- Left-side large image -->
       <div class="col-md-6">
         <img
           src="<%= listing.image.url %>"
-          class="show-img card-img-top"
-          alt="listing_image"
+          class="main-img"
+          alt="Main listing image"
         />
       </div>
-      <div class="col-md-6">
-        <img
-          src="<%= listing.image.url %>"
-          class="show-img card-img-top"
-          alt="listing_image"
-        />
+
+      <!-- Right-side grid of 4 images -->
+      <div class="col-md-6 d-flex flex-wrap">
+        <div class="col-6" style="padding: 0 4px 4px 8px">
+          <img
+            src="<%= listing.image.url %>"
+            class="side-img"
+            alt="Side image 1"
+          />
+        </div>
+        <div class="col-6" style="padding: 0 0 4px 4px">
+          <img
+            src="<%= listing.image.url %>"
+            class="side-img"
+            alt="Side image 2"
+          />
+        </div>
+        <div class="col-6" style="padding: 4px 4px 0 8px">
+          <img
+            src="<%= listing.image.url %>"
+            class="side-img"
+            alt="Side image 3"
+          />
+        </div>
+        <div class="col-6" style="padding: 4px 0 0 4px">
+          <img
+            src="<%= listing.image.url %>"
+            class="side-img"
+            alt="Side image 4"
+          />
+        </div>
       </div>
     </div>
 
@@ -52,7 +78,7 @@
               ><button class="btn btn-dark add-btn mb-3">Edit</button></a
             >
           </div>
-          <div style="margin-left: 20px">
+          <div>
             <form
               method="POST"
               action="/listings/<%=listing._id%>?_method=DELETE"
@@ -141,7 +167,7 @@
           </form>
         </div>
         <% } %> <% if(listing.reviews.length > 0) { %>
-        <div style="display: flex; flex-wrap: wrap; flex-direction: row">
+        <div class="reviews">
           <hr />
           <p><b>All Reviews</b></p>
           <% for(review of listing.reviews) { %>
@@ -169,36 +195,14 @@
         </div>
         <% } %>
       </div>
-      <div
-        class="col-md-4"
-        style="
-          border: 0.1px solid rgb(194, 189, 189);
-          border-radius: 1rem;
-          margin-left: 6rem;
-          height: 80vh;
-        "
-      >
-        <div class="content" style="padding: 2rem 2rem 2rem 2rem">
+      <div class="col-md-4" style="width: 33%">
+        <div class="content">
           <h4>
             <b>Price : </b>
             &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
           </h4>
-          <div
-            class="date mb-3 col-md-12 row g-0"
-            style="
-              height: 5rem;
-              border: 0.1px solid rgb(194, 189, 189);
-              border-radius: 1rem;
-              margin-top: 2rem;
-            "
-          >
-            <div
-              class="col-md-6"
-              style="
-                border-right: 0.1px solid rgb(194, 189, 189);
-                padding: 0.5rem 0 0 1rem;
-              "
-            >
+          <div class="date mb-3 col-md-12 row g-0">
+            <div class="col-md-6">
               <p>
                 <b>
                   CHECK-IN
@@ -207,13 +211,7 @@
                 </b>
               </p>
             </div>
-            <div
-              class="col-md-6"
-              style="
-                border-left: 0.1px solid rgb(194, 189, 189);
-                padding: 0.5rem 0 0 1rem;
-              "
-            >
+            <div class="col-md-6">
               <p>
                 <b>
                   CHECK-OUT
@@ -223,30 +221,9 @@
               </p>
             </div>
           </div>
-          <!-- <p class="card-text mb-1">rates</p>
-          <div
-            class="rates mb-3"
-            style="
-              height: 5rem;
-              border: 0.1px solid rgb(194, 189, 189);
-              border-radius: 1rem;
-            "
-          ></div> -->
-          <div
-            class="reserve mb-3"
-            style="
-              height: 10rem;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
-            "
-          >
+          <div class="reserve mb-3">
             <a href="/listings/<%= listing._id %>"
-              ><button
-                class="btn btn-dark add-btn mb-3 mt-3"
-                style="width: 20vw; height: 10vh"
-              >
+              ><button class="btn btn-dark add-btn mb-3 mt-3">
                 Reserve
               </button></a
             >
