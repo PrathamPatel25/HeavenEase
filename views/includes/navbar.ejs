@@ -1,75 +1,58 @@
-<style>
-  .search-btn {
-    background-color: #0070bb;
-    color: #fff;
-    border-radius: 25px;
-    padding: 0 1rem 0 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .search-btn p {
-    margin: 0;
-  }
-
-  .search-btn:hover {
-    background-color: #0070bb;
-    color: #fff;
-  }
-
-  .search-btn i {
-    display: inline;
-    margin-right: 0.5rem;
-  }
-
-  .search-inp {
-    border-radius: 25px;
-    padding: 0.5rem 3rem 0.5rem 3rem;
-    font-size: 1rem;
-    text-align: center;
-  }
-</style>
-
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/listings"
-      ><i class="fa-regular fa-compass"></i
-    ></a>
+    <a class="navbar-brand" href="/listings">
+      <i class="fa-regular fa-compass"></i>
+    </a>
+
     <button
-      class="navbar-toggler"
+      class="navbar-toggler border-0"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#navbarNavAltMarkup"
+      aria-expanded="false"
     >
-      <span class="navbar-toggler-icon"></span>
+      <i class="fas fa-bars"></i>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="mobile-nav-header d-md-none">
+        <button
+          class="btn-close"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-label="Close menu"
+        ></button>
+      </div>
+
       <div class="navbar-nav">
         <a class="nav-link" href="/listings">Explore</a>
       </div>
 
-      <div class="navbar-nav ms-auto">
+      <div class="navbar-nav ms-auto order-md-2">
         <form
-          class="d-flex"
+          class="d-flex search-form"
           role="search"
           action="/listings/search"
           method="get"
         >
-          <input
-            class="form-control me-2 search-inp"
-            type="search"
-            placeholder="Search"
-            name="q"
-          />
-          <button class="btn search-btn" type="submit">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <p>Search</p>
-          </button>
+          <div class="search-wrapper">
+            <input
+              class="form-control search-inp"
+              type="search"
+              placeholder="Search destinations"
+              name="q"
+              aria-label="Search"
+            />
+            <button class="btn search-btn" type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <span>Search</span>
+            </button>
+          </div>
         </form>
       </div>
 
-      <div class="navbar-nav ms-auto">
+      <div class="navbar-nav ms-auto order-md-3">
         <a class="nav-link" href="/listings/new">Add new Listing</a>
         <% if(!currUser) { %>
         <a class="nav-link" href="/signup"><b>Sign up</b></a>
@@ -81,3 +64,182 @@
     </div>
   </div>
 </nav>
+
+<style>
+  .navbar {
+    background: white;
+    padding: 0.75rem 1rem;
+  }
+
+  .navbar-brand {
+    font-size: 1.75rem;
+    color: #0070bb;
+  }
+
+  .navbar-brand:hover {
+    color: #005a96;
+  }
+
+  .nav-link {
+    color: #484848;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s ease;
+  }
+
+  .nav-link:hover {
+    color: #0070bb;
+  }
+
+  .search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .search-inp {
+    border-radius: 25px;
+    padding: 0.625rem 1rem;
+    font-size: 0.95rem;
+    border: 1px solid #e0e0e0;
+    width: 100%;
+    transition: all 0.2s ease;
+  }
+
+  .search-inp:focus {
+    border-color: #0070bb;
+    box-shadow: 0 0 0 4px rgba(0, 112, 187, 0.1);
+  }
+
+  .search-btn {
+    background-color: #0070bb;
+    color: #fff;
+    border-radius: 25px;
+    padding: 0.625rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .search-btn:hover {
+    background-color: #005a96;
+    color: #fff;
+  }
+
+  .navbar-toggler {
+    padding: 0.5rem;
+  }
+
+  .navbar-toggler:focus {
+    box-shadow: none;
+  }
+
+  /* Mobile styles */
+  @media (max-width: 767.98px) {
+    .navbar-collapse {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      bottom: 0;
+      width: 75%;
+      max-width: 300px;
+      background: white;
+      transition: right 0.3s ease;
+      height: 100vh !important;
+      overflow-y: auto;
+      z-index: 1050;
+      padding: 1rem;
+      box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-collapse.show {
+      right: 0;
+    }
+
+    .mobile-nav-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .btn-close {
+      padding: 0.5rem;
+    }
+
+    .search-form {
+      margin: 1rem 0;
+    }
+
+    .search-wrapper {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .search-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .navbar-nav {
+      padding: 1rem 0;
+    }
+
+    .nav-link {
+      padding: 0.75rem 0;
+    }
+  }
+
+  /* Overlay when mobile menu is open */
+  @media (max-width: 767.98px) {
+    .navbar-collapse::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+
+    .navbar-collapse.show::before {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Close mobile menu when clicking outside
+    document.addEventListener("click", function (event) {
+      const navbarCollapse = document.querySelector(".navbar-collapse");
+      const navbarToggler = document.querySelector(".navbar-toggler");
+
+      if (
+        navbarCollapse.classList.contains("show") &&
+        !navbarCollapse.contains(event.target) &&
+        !navbarToggler.contains(event.target)
+      ) {
+        navbarCollapse.classList.remove("show");
+      }
+    });
+
+    // Close mobile menu when pressing escape key
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        const navbarCollapse = document.querySelector(".navbar-collapse");
+        if (navbarCollapse.classList.contains("show")) {
+          navbarCollapse.classList.remove("show");
+        }
+      }
+    });
+  });
+</script>

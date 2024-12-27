@@ -1,6 +1,8 @@
 <% layout("/layouts/boilerplate") %>
-<body>
-  <div id="filters">
+
+<div class="container-fluid px-4">
+  <!-- Category Filters -->
+  <div class="filters-section mb-4">
     <div class="scrollable-tabs-container">
       <div class="left-arrow">
         <svg
@@ -19,55 +21,62 @@
         </svg>
       </div>
       <div class="filter-container">
-        <a class="filter active" href="/listings">
-          <div><i class="fa-solid fa-house"></i></div>
-          <p>ALL</p>
+        <a class="filter-item active" href="/listings">
+          <div class="filter-icon"><i class="fa-solid fa-house"></i></div>
+          <span>All</span>
         </a>
-        <a class="filter" href="/listings/filter/Trending">
-          <div><i class="fa-solid fa-fire"></i></div>
-          <p>Trending</p>
+        <a class="filter-item" href="/listings/filter/Trending">
+          <div class="filter-icon"><i class="fa-solid fa-fire"></i></div>
+          <span>Trending</span>
         </a>
-        <a class="filter" href="/listings/filter/Iconic cities">
-          <div><i class="fa-solid fa-mountain-city"></i></div>
-          <p>Iconic cities</p>
+        <a class="filter-item" href="/listings/filter/Iconic cities">
+          <div class="filter-icon">
+            <i class="fa-solid fa-mountain-city"></i>
+          </div>
+          <span>Iconic cities</span>
         </a>
-        <a class="filter" href="/listings/filter/Mountains">
-          <div><i class="fa-solid fa-mountain"></i></div>
-          <p>Mountains</p>
+        <a class="filter-item" href="/listings/filter/Mountains">
+          <div class="filter-icon"><i class="fa-solid fa-mountain"></i></div>
+          <span>Mountains</span>
         </a>
-        <a class="filter" href="/listings/filter/Castles">
-          <div><i class="fa-brands fa-fort-awesome"></i></div>
-          <p>Castles</p>
+        <a class="filter-item" href="/listings/filter/Castles">
+          <div class="filter-icon">
+            <i class="fa-brands fa-fort-awesome"></i>
+          </div>
+          <span>Castles</span>
         </a>
-        <a class="filter" href="/listings/filter/Amazing pools">
-          <div><i class="fa-solid fa-person-swimming"></i></div>
-          <p>Amazing pools</p>
+        <a class="filter-item" href="/listings/filter/Amazing pools">
+          <div class="filter-icon">
+            <i class="fa-solid fa-person-swimming"></i>
+          </div>
+          <span>Amazing pools</span>
         </a>
-        <a class="filter" href="/listings/filter/Rooms">
-          <div><i class="fa-solid fa-bed"></i></div>
-          <p>Rooms</p>
+        <a class="filter-item" href="/listings/filter/Rooms">
+          <div class="filter-icon"><i class="fa-solid fa-bed"></i></div>
+          <span>Rooms</span>
         </a>
-        <a class="filter" href="/listings/filter/Camping">
-          <div><i class="fa-solid fa-campground"></i></div>
-          <p>Camping</p>
+        <a class="filter-item" href="/listings/filter/Camping">
+          <div class="filter-icon"><i class="fa-solid fa-campground"></i></div>
+          <span>Camping</span>
         </a>
-        <a class="filter" href="/listings/filter/Farms">
-          <div><i class="fa-solid fa-cow"></i></div>
-          <p>Farms</p>
+        <a class="filter-item" href="/listings/filter/Farms">
+          <div class="filter-icon"><i class="fa-solid fa-cow"></i></div>
+          <span>Farms</span>
         </a>
-        <a class="filter" href="/listings/filter/Arctic">
-          <div><i class="fa-regular fa-snowflake"></i></div>
-          <p>Arctic</p>
+        <a class="filter-item" href="/listings/filter/Arctic">
+          <div class="filter-icon"><i class="fa-regular fa-snowflake"></i></div>
+          <span>Arctic</span>
         </a>
-        <a class="filter" href="/listings/filter/Domes">
-          <div><i class="fa-solid fa-igloo"></i></div>
-          <p>Domes</p>
+        <a class="filter-item" href="/listings/filter/Domes">
+          <div class="filter-icon"><i class="fa-solid fa-igloo"></i></div>
+          <span>Domes</span>
         </a>
-        <a class="filter" href="/listings/filter/Boats">
-          <div><i class="fa-solid fa-ship"></i></div>
-          <p>Boats</p>
+        <a class="filter-item" href="/listings/filter/Boats">
+          <div class="filter-icon"><i class="fa-solid fa-ship"></i></div>
+          <span>Boats</span>
         </a>
       </div>
+
       <div class="right-arrow active">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -86,169 +95,363 @@
       </div>
     </div>
 
-    <div class="tax-toggle">
-      <div class="form-check-reverse form-switch">
+    <div class="tax-toggle-container">
+      <div class="form-check form-switch">
         <input
           class="form-check-input"
           type="checkbox"
           role="switch"
-          id="flexSwitchCheckDefault"
+          id="taxToggle"
         />
-        <label class="form-check-label" for="flexSwitchCheckDefault"
+        <label class="form-check-label" for="taxToggle"
           >Display total after taxes</label
         >
       </div>
     </div>
   </div>
-  <div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1 mt-4">
-    <% for(let listing of allListings) { %>
-    <a href="/listings/<%=listing._id%>" class="listing-link">
-      <div class="card col listing-card listing-box">
-        <img
-          src="<%=listing.image.url%>"
-          class="card-img-top"
-          alt="listing_image"
-          style="height: 20rem"
-        />
 
-        <div class="card-body">
-          <p class="card-text">
-            <b><%= listing.title %></b><br />
-            &#8377; <%= listing.price ? listing.price : "N/A" %> / night
-            <i class="tax-info"> &nbsp; &nbsp;+18% GST</i>
-          </p>
+  <!-- Listings Grid -->
+  <div class="listings-grid">
+    <% for(let listing of allListings) { %>
+    <a href="/listings/<%=listing._id%>" class="listing-card-link">
+      <div class="listing-card">
+        <div class="listing-image">
+          <img src="<%=listing.image.url%>" alt="<%=listing.title%>" />
+        </div>
+        <div class="listing-details">
+          <h3 class="listing-title"><%= listing.title %></h3>
+          <div class="listing-price">
+            <span class="price"
+              >₹<%= listing.price ? listing.price.toLocaleString("en-IN") :
+              "N/A" %></span
+            >
+            <span class="per-night">/ night</span>
+            <span class="tax-info">+18% GST</span>
+          </div>
         </div>
       </div>
     </a>
     <% } %>
   </div>
-</body>
+</div>
+
+<style>
+  /* Filters Section */
+  .filters-section {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 100;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .scrollable-tabs-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+  }
+
+  .filter-container {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0.5rem 0;
+  }
+
+  .filter-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #666;
+    min-width: 56px;
+    transition: all 0.3s ease;
+  }
+
+  .filter-item:hover {
+    color: #222;
+    transform: translateY(-2px);
+  }
+
+  .filter-item.active {
+    color: #222;
+  }
+
+  .filter-icon {
+    font-size: 1.25rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    background: #f8f9fa;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .filter-item:hover .filter-icon,
+  .filter-item.active .filter-icon {
+    background: #e9ecef;
+    transform: scale(1.05);
+  }
+
+  .filter-item span {
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+
+  .nav-arrow {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .nav-arrow.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-arrow:hover {
+    background: #f8f9fa;
+    transform: scale(1.1);
+  }
+
+  /* Tax Toggle */
+  .tax-toggle-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5rem 0;
+  }
+
+  /* Listings Grid */
+  .listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 1rem 0;
+  }
+
+  .listing-card-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .listing-card {
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    background: white;
+    height: 100%;
+  }
+
+  .listing-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .listing-image {
+    position: relative;
+    padding-top: 66.67%;
+    overflow: hidden;
+  }
+
+  .listing-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .listing-card:hover .listing-image img {
+    transform: scale(1.05);
+  }
+
+  .listing-details {
+    padding: 1rem;
+  }
+
+  .listing-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #222;
+  }
+
+  .listing-price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+    color: #666;
+  }
+
+  .listing-price .price {
+    font-weight: 600;
+    color: #222;
+  }
+
+  .listing-price .per-night {
+    font-size: 0.875rem;
+  }
+
+  .tax-info {
+    font-size: 0.75rem;
+    color: #666;
+    display: none;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .container-fluid {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .filter-container {
+      gap: 1rem;
+    }
+
+    .listings-grid {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .listings-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .filter-icon {
+      width: 40px;
+      height: 40px;
+      font-size: 1rem;
+    }
+
+    .filter-item span {
+      font-size: 0.75rem;
+    }
+  }
+</style>
 
 <script>
-  let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+  document.addEventListener("DOMContentLoaded", function () {
+    // Tax Toggle Functionality
+    const taxToggle = document.getElementById("taxToggle");
+    const taxInfo = document.querySelectorAll(".tax-info");
 
-  taxSwitch.addEventListener("change", () => {
-    updatePriceDisplay(taxSwitch.checked);
-  });
-
-  taxSwitch.addEventListener("click", () => {
-    let taxInfo = document.getElementsByClassName("tax-info");
-    for (info of taxInfo) {
-      if (info.style.display != "inline") {
-        info.style.display = "inline";
-      } else {
-        info.style.display = "none";
-      }
-    }
-  });
-
-  const tabs = document.querySelectorAll(
-    ".scrollable-tabs-container .filter-container a"
-  );
-  const rightArrow = document.querySelector(
-    ".scrollable-tabs-container .right-arrow svg"
-  );
-  const leftArrow = document.querySelector(
-    ".scrollable-tabs-container .left-arrow svg"
-  );
-  const filterContainer = document.querySelector(
-    ".scrollable-tabs-container .filter-container"
-  );
-  const leftArrowContainer = document.querySelector(
-    ".scrollable-tabs-container .left-arrow"
-  );
-  const rightArrowContainer = document.querySelector(
-    ".scrollable-tabs-container .right-arrow"
-  );
-
-  const removeAllActiveClasses = () => {
-    tabs.forEach((tab) => {
-      tab.classList.remove("active");
+    taxToggle.addEventListener("change", () => {
+      taxInfo.forEach((info) => {
+        info.style.display = taxToggle.checked ? "inline" : "none";
+      });
     });
-  };
 
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", (event) => {
-      event.preventDefault();
-      setActiveFilter(tab);
-      window.location.href = tab.getAttribute("href");
+    // Filter Navigation
+    const filterContainer = document.querySelector(".filter-container");
+    const leftArrow = document.querySelector(".left-arrow");
+    const rightArrow = document.querySelector(".right-arrow");
+    const filterItems = document.querySelectorAll(".filter-item");
+
+    // Arrow visibility management
+    const updateArrowVisibility = () => {
+      const isScrollable =
+        filterContainer.scrollWidth > filterContainer.clientWidth;
+      const isScrolledToStart = filterContainer.scrollLeft <= 20;
+      const isScrolledToEnd =
+        filterContainer.scrollLeft >=
+        filterContainer.scrollWidth - filterContainer.clientWidth - 20;
+
+      leftArrow.classList.toggle("active", isScrollable && !isScrolledToStart);
+      rightArrow.classList.toggle("active", isScrollable && !isScrolledToEnd);
+    };
+
+    // Initialize arrow visibility
+    updateArrowVisibility();
+
+    // Scroll handlers
+    leftArrow.addEventListener("click", () => {
+      filterContainer.scrollBy({ left: -200, behavior: "smooth" });
     });
-  });
 
-  const setActiveFilter = (tab) => {
-    removeAllActiveClasses();
-    tab.classList.add("active");
-    localStorage.setItem("activeFilter", tab.getAttribute("href"));
-  };
+    rightArrow.addEventListener("click", () => {
+      filterContainer.scrollBy({ left: 200, behavior: "smooth" });
+    });
 
-  // Check if there's a stored active filter and set it on page load
-  document.addEventListener("DOMContentLoaded", () => {
+    filterContainer.addEventListener("scroll", updateArrowVisibility);
+    window.addEventListener("resize", updateArrowVisibility);
+
+    // Filter item active state
+    const setActiveFilter = (filter) => {
+      filterItems.forEach((item) => item.classList.remove("active"));
+      filter.classList.add("active");
+      localStorage.setItem("activeFilter", filter.getAttribute("href"));
+    };
+
+    filterItems.forEach((filter) => {
+      filter.addEventListener("click", (e) => {
+        e.preventDefault();
+        setActiveFilter(filter);
+        window.location.href = filter.getAttribute("href");
+      });
+    });
+
+    // Restore active filter from localStorage
     const storedFilter = localStorage.getItem("activeFilter");
     if (storedFilter) {
-      const activeTab = document.querySelector(
-        `.filter[href="${storedFilter}"]`
+      const activeFilter = document.querySelector(
+        `.filter-item[href="${storedFilter}"]`
       );
-      if (activeTab) {
-        setActiveFilter(activeTab);
+      if (activeFilter) {
+        setActiveFilter(activeFilter);
       }
     }
-  });
 
-  const manageIcons = () => {
-    if (filterContainer.scrollLeft >= 20) {
-      leftArrowContainer.classList.add("active");
-    } else {
-      leftArrowContainer.classList.remove("active");
-    }
+    // Smooth scrolling for filter container
+    let isMouseDown = false;
+    let startX;
+    let scrollLeft;
 
-    let maxScrollValue =
-      filterContainer.scrollWidth - filterContainer.clientWidth - 20;
-    // console.log("scroll width: " + filterContainer.scrollWidth);
-    // console.log("client width: " + filterContainer.clientWidth);
-    // console.log("max scroll value: " + maxScrollValue);
-    // console.log("scroll left value: " + filterContainer.scrollLeft);
+    filterContainer.addEventListener("mousedown", (e) => {
+      isMouseDown = true;
+      startX = e.pageX - filterContainer.offsetLeft;
+      scrollLeft = filterContainer.scrollLeft;
+    });
 
-    if (filterContainer.scrollLeft >= maxScrollValue) {
-      rightArrowContainer.classList.remove("active");
-    } else {
-      rightArrowContainer.classList.add("active");
-    }
-  };
+    filterContainer.addEventListener("mouseleave", () => {
+      isMouseDown = false;
+    });
 
-  rightArrow.addEventListener("click", () => {
-    console.log("clicked");
-    filterContainer.scrollLeft += 200;
-    setTimeout(() => {
-      manageIcons();
-    }, 500);
-  });
+    filterContainer.addEventListener("mouseup", () => {
+      isMouseDown = false;
+    });
 
-  leftArrow.addEventListener("click", () => {
-    console.log("clicked");
-    filterContainer.scrollLeft -= 200;
-    setTimeout(() => {
-      manageIcons();
-    }, 500);
-  });
-
-  filterContainer.addEventListener("scroll", manageIcons);
-
-  let dragging = false;
-
-  const drag = (e) => {
-    if (!dragging) return;
-    filterContainer.classList.add("dragging");
-    filterContainer.scrollLeft -= e.movementX;
-  };
-
-  filterContainer.addEventListener("mousedown", () => {
-    dragging = true;
-  });
-
-  filterContainer.addEventListener("mousemove", drag);
-
-  document.addEventListener("mouseup", () => {
-    dragging = false;
-    filterContainer.classList.remove("dragging");
+    filterContainer.addEventListener("mousemove", (e) => {
+      if (!isMouseDown) return;
+      e.preventDefault();
+      const x = e.pageX - filterContainer.offsetLeft;
+      const walk = (x - startX) * 2;
+      filterContainer.scrollLeft = scrollLeft - walk;
+    });
   });
 </script>
