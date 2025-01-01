@@ -110,15 +110,13 @@ module.exports.destroyListing = async (req, res) => {
 
 module.exports.search = async (req, res) => {
   console.log(req.query.q);
-  let input = req.query.q.trim().replace(/\s+/g, " "); //remove start and end space
+  let input = req.query.q.trim().replace(/\s+/g, " ");
   console.log(input);
   if (input == "" || input == " ") {
-    //search value is empty
     req.flash("error", "Search value empty!!!");
     res.redirect("/listings");
   }
 
-  //convert every word first letter capital and other small
   let data = input.split("");
   let element = "";
   let flag = false;
@@ -171,9 +169,8 @@ module.exports.search = async (req, res) => {
     }
   }
 
-  const intValue = parseInt(element, 10); //10 for decimal return - int ya NaN
-  const intDec = Number.isInteger(intValue); //check intValue is number or not
-
+  const intValue = parseInt(element, 10);
+  const intDec = Number.isInteger(intValue);
   if (allListings.length == 0 && intDec) {
     allListings = await Listing.find({ price: { $lte: element } }).sort({
       price: 1,

@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
     <a class="navbar-brand" href="/listings">
-      <i class="fa-regular fa-compass"></i>
+      <i class="fa-solid fa-map-location-dot"></i>
     </a>
 
     <button
@@ -26,7 +26,14 @@
       </div>
 
       <div class="navbar-nav">
-        <a class="nav-link" href="/listings">Explore</a>
+        <a
+          class="nav-link brand-link d-flex align-items-center"
+          href="/listings"
+        >
+          <span class="brand-text"
+            >Heaven<span class="accent-text">Ease</span></span
+          >
+        </a>
       </div>
 
       <div class="navbar-nav ms-auto order-md-2">
@@ -90,6 +97,40 @@
     color: #0070bb;
   }
 
+  .brand-link {
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: transform 0.3s ease;
+  }
+
+  .brand-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3436;
+    letter-spacing: 0.5px;
+  }
+
+  .accent-text {
+    color: #0070bb;
+    font-weight: 800;
+  }
+
+  .brand-link:hover {
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 768px) {
+    .brand-text {
+      font-size: 1.3rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .brand-text {
+      font-size: 1.1rem;
+    }
+  }
+
   .search-wrapper {
     position: relative;
     display: flex;
@@ -136,7 +177,6 @@
     box-shadow: none;
   }
 
-  /* Mobile styles */
   @media (max-width: 767.98px) {
     .navbar-collapse {
       position: fixed;
@@ -193,7 +233,6 @@
     }
   }
 
-  /* Overlay when mobile menu is open */
   @media (max-width: 767.98px) {
     .navbar-collapse::before {
       content: "";
@@ -218,7 +257,6 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    // Close mobile menu when clicking outside
     document.addEventListener("click", function (event) {
       const navbarCollapse = document.querySelector(".navbar-collapse");
       const navbarToggler = document.querySelector(".navbar-toggler");
@@ -232,7 +270,6 @@
       }
     });
 
-    // Close mobile menu when pressing escape key
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape") {
         const navbarCollapse = document.querySelector(".navbar-collapse");

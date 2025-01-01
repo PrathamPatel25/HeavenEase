@@ -1,7 +1,6 @@
 <% layout("/layouts/boilerplate") %>
 
 <div class="container-fluid px-4">
-  <!-- Category Filters -->
   <div class="filters-section mb-4">
     <div class="scrollable-tabs-container">
       <div class="left-arrow">
@@ -21,60 +20,41 @@
         </svg>
       </div>
       <div class="filter-container">
-        <a class="filter-item active" href="/listings">
-          <div class="filter-icon"><i class="fa-solid fa-house"></i></div>
-          <span>All</span>
-        </a>
-        <a class="filter-item" href="/listings/filter/Trending">
-          <div class="filter-icon"><i class="fa-solid fa-fire"></i></div>
-          <span>Trending</span>
-        </a>
-        <a class="filter-item" href="/listings/filter/Iconic cities">
+        <% const filters = [ { label: "All", href: "/listings", icon: "fa-house"
+        }, { label: "Iconic cities", href: "/listings/filter/Iconic cities",
+        icon: "fa-mountain-city" }, { label: "Lakefront", href:
+        "/listings/filter/Lakefront", icon: "fa-water" }, { label: "Mansions",
+        href: "/listings/filter/Mansions", icon: "fa-building-columns" }, {
+        label: "Earth homes", href: "/listings/filter/Earth homes", icon:
+        "fa-tree" }, { label: "A-frames", href: "/listings/filter/A-frames",
+        icon: "fa-a" }, { label: "Ski-in", href: "/listings/filter/Ski-in",
+        icon: "fa-person-skiing" }, { label: "Desert", href:
+        "/listings/filter/Desert", icon: "fa-sun" }, { label: "Beach", href:
+        "/listings/filter/Beach", icon: "fa-umbrella-beach" }, { label:
+        "Mountains", href: "/listings/filter/Mountains", icon: "fa-mountain" },
+        { label: "Castles", href: "/listings/filter/Castles", icon:
+        "fa-fort-awesome" }, { label: "Amazing pools", href:
+        "/listings/filter/Amazing pools", icon: "fa-person-swimming" }, { label:
+        "Rooms", href: "/listings/filter/Rooms", icon: "fa-bed" }, { label:
+        "Camping", href: "/listings/filter/Camping", icon: "fa-campground" }, {
+        label: "Farms", href: "/listings/filter/Farms", icon: "fa-tractor" }, {
+        label: "Arctic", href: "/listings/filter/Arctic", icon: "fa-snowflake"
+        }, { label: "Domes", href: "/listings/filter/Domes", icon: "fa-igloo" },
+        { label: "Boats", href: "/listings/filter/Boats", icon: "fa-ship" } ];
+        %> <% filters.forEach((filter, index) => { %>
+        <a
+          class="filter-item <%= index === 0 ? 'active' : '' %>"
+          href="<%= filter.href %>"
+        >
           <div class="filter-icon">
-            <i class="fa-solid fa-mountain-city"></i>
+            <i
+              class="<%= filter.label === 'Castles' ? 'fa-brands' : 'fa-solid' %> <%= filter.icon %>"
+            ></i>
           </div>
-          <span>Iconic cities</span>
+
+          <span><%= filter.label %></span>
         </a>
-        <a class="filter-item" href="/listings/filter/Mountains">
-          <div class="filter-icon"><i class="fa-solid fa-mountain"></i></div>
-          <span>Mountains</span>
-        </a>
-        <a class="filter-item" href="/listings/filter/Castles">
-          <div class="filter-icon">
-            <i class="fa-brands fa-fort-awesome"></i>
-          </div>
-          <span>Castles</span>
-        </a>
-        <a class="filter-item" href="/listings/filter/Amazing pools">
-          <div class="filter-icon">
-            <i class="fa-solid fa-person-swimming"></i>
-          </div>
-          <span>Amazing pools</span>
-        </a>
-        <a class="filter-item" href="/listings/filter/Rooms">
-          <div class="filter-icon"><i class="fa-solid fa-bed"></i></div>
-          <span>Rooms</span>
-        </a>
-        <a class="filter-item" href="/listings/filter/Camping">
-          <div class="filter-icon"><i class="fa-solid fa-campground"></i></div>
-          <span>Camping</span>
-        </a>
-        <a class="filter-item" href="/listings/filter/Farms">
-          <div class="filter-icon"><i class="fa-solid fa-cow"></i></div>
-          <span>Farms</span>
-        </a>
-        <a class="filter-item" href="/listings/filter/Arctic">
-          <div class="filter-icon"><i class="fa-regular fa-snowflake"></i></div>
-          <span>Arctic</span>
-        </a>
-        <a class="filter-item" href="/listings/filter/Domes">
-          <div class="filter-icon"><i class="fa-solid fa-igloo"></i></div>
-          <span>Domes</span>
-        </a>
-        <a class="filter-item" href="/listings/filter/Boats">
-          <div class="filter-icon"><i class="fa-solid fa-ship"></i></div>
-          <span>Boats</span>
-        </a>
+        <% }) %>
       </div>
 
       <div class="right-arrow active">
@@ -110,7 +90,6 @@
     </div>
   </div>
 
-  <!-- Listings Grid -->
   <div class="listings-grid">
     <% for(let listing of allListings) { %>
     <a href="/listings/<%=listing._id%>" class="listing-card-link">
@@ -136,7 +115,6 @@
 </div>
 
 <style>
-  /* Filters Section */
   .filters-section {
     position: sticky;
     top: 0;
@@ -236,14 +214,12 @@
     transform: scale(1.1);
   }
 
-  /* Tax Toggle */
   .tax-toggle-container {
     display: flex;
     justify-content: flex-end;
     padding: 0.5rem 0;
   }
 
-  /* Listings Grid */
   .listings-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -321,7 +297,6 @@
     display: none;
   }
 
-  /* Responsive Adjustments */
   @media (max-width: 768px) {
     .container-fluid {
       padding-left: 1rem;
@@ -357,23 +332,37 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    // Tax Toggle Functionality
     const taxToggle = document.getElementById("taxToggle");
     const taxInfo = document.querySelectorAll(".tax-info");
+    const priceElements = document.querySelectorAll(".price");
+
+    priceElements.forEach((priceElement) => {
+      const basePrice =
+        parseFloat(priceElement.textContent.replace(/[^0-9.]/g, "")) || 0;
+      priceElement.setAttribute("data-base-price", basePrice);
+    });
 
     taxToggle.addEventListener("change", () => {
       taxInfo.forEach((info) => {
         info.style.display = taxToggle.checked ? "inline" : "none";
       });
+
+      priceElements.forEach((priceElement) => {
+        const basePrice = parseFloat(
+          priceElement.getAttribute("data-base-price")
+        );
+
+        const finalPrice = taxToggle.checked ? basePrice * 1.18 : basePrice;
+
+        priceElement.textContent = `₹${finalPrice.toLocaleString("en-IN")}`;
+      });
     });
 
-    // Filter Navigation
     const filterContainer = document.querySelector(".filter-container");
     const leftArrow = document.querySelector(".left-arrow");
     const rightArrow = document.querySelector(".right-arrow");
     const filterItems = document.querySelectorAll(".filter-item");
 
-    // Arrow visibility management
     const updateArrowVisibility = () => {
       const isScrollable =
         filterContainer.scrollWidth > filterContainer.clientWidth;
@@ -386,10 +375,8 @@
       rightArrow.classList.toggle("active", isScrollable && !isScrolledToEnd);
     };
 
-    // Initialize arrow visibility
     updateArrowVisibility();
 
-    // Scroll handlers
     leftArrow.addEventListener("click", () => {
       filterContainer.scrollBy({ left: -200, behavior: "smooth" });
     });
@@ -401,7 +388,6 @@
     filterContainer.addEventListener("scroll", updateArrowVisibility);
     window.addEventListener("resize", updateArrowVisibility);
 
-    // Filter item active state
     const setActiveFilter = (filter) => {
       filterItems.forEach((item) => item.classList.remove("active"));
       filter.classList.add("active");
@@ -416,7 +402,6 @@
       });
     });
 
-    // Restore active filter from localStorage
     const storedFilter = localStorage.getItem("activeFilter");
     if (storedFilter) {
       const activeFilter = document.querySelector(
@@ -427,7 +412,6 @@
       }
     }
 
-    // Smooth scrolling for filter container
     let isMouseDown = false;
     let startX;
     let scrollLeft;

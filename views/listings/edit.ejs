@@ -11,7 +11,6 @@
         class="needs-validation"
         enctype="multipart/form-data"
       >
-        <!-- Title -->
         <div class="mb-4">
           <label for="title" class="form-label fw-semibold">Title</label>
           <input
@@ -25,7 +24,6 @@
           <div class="invalid-feedback">Please provide a title.</div>
         </div>
 
-        <!-- Description -->
         <div class="mb-4">
           <label for="description" class="form-label fw-semibold"
             >Description</label
@@ -41,7 +39,6 @@
           <div class="invalid-feedback">Please enter a description.</div>
         </div>
 
-        <!-- Original Image -->
         <div class="mb-4 text-center">
           <p class="fw-semibold">Original Listing Image</p>
           <img
@@ -52,7 +49,6 @@
           />
         </div>
 
-        <!-- Upload New Image -->
         <div class="mb-4">
           <label for="image" class="form-label fw-semibold"
             >Upload New Image</label
@@ -64,7 +60,28 @@
           />
         </div>
 
-        <!-- Price and Country -->
+        <div class="mb-4">
+          <label for="category" class="form-label fw-semibold">Category</label>
+          <select
+            class="form-select shadow-sm"
+            id="category"
+            name="listing[category]"
+            required
+          >
+            <option selected disabled value="">Select a category</option>
+            <% const categories = [ "Rooms", "Iconic cities", "Mountains",
+            "Castles", "Amazing pools", "Camping", "Farms", "Arctic", "Domes",
+            "Boats", "Lakefront", "Mansions", "Earth homes", "A-frames",
+            "Ski-in", "Desert", "Beach" ]; categories.forEach(category => { %>
+            <% if(listing.category === category) { %>
+            <option value="<%= category %>" selected><%= category %></option>
+            <% } else { %>
+            <option value="<%= category %>"><%= category %></option>
+            <% } %> <% }) %>
+          </select>
+          <div class="invalid-feedback">Please select a valid category.</div>
+        </div>
+
         <div class="row">
           <div class="col-md-6 mb-4">
             <label for="price" class="form-label fw-semibold">Price</label>
@@ -93,7 +110,6 @@
           </div>
         </div>
 
-        <!-- Location -->
         <div class="mb-4">
           <label for="location" class="form-label fw-semibold">Location</label>
           <input
@@ -106,7 +122,6 @@
           <div class="invalid-feedback">Please provide a valid location.</div>
         </div>
 
-        <!-- Submit Button -->
         <div class="text-center">
           <button class="btn btn-primary btn-md shadow-sm" type="submit">
             Save Changes

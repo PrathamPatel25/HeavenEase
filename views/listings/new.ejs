@@ -11,7 +11,6 @@
         class="needs-validation"
         enctype="multipart/form-data"
       >
-        <!-- Title -->
         <div class="mb-4">
           <label for="title" class="form-label fw-semibold">Title</label>
           <input
@@ -25,7 +24,6 @@
           <div class="invalid-feedback">Please provide a title.</div>
         </div>
 
-        <!-- Description -->
         <div class="mb-4">
           <label for="description" class="form-label fw-semibold"
             >Description</label
@@ -40,7 +38,6 @@
           <div class="invalid-feedback">Please enter a description.</div>
         </div>
 
-        <!-- Image -->
         <div class="mb-4">
           <label for="image" class="form-label fw-semibold"
             >Upload Listing Image</label
@@ -53,7 +50,6 @@
           />
         </div>
 
-        <!-- Category -->
         <div class="mb-4">
           <label for="category" class="form-label fw-semibold">Category</label>
           <select
@@ -63,21 +59,17 @@
             required
           >
             <option selected disabled value="">Select a category</option>
-            <option value="Rooms">Rooms</option>
-            <option value="Iconic cities">Iconic cities</option>
-            <option value="Mountains">Mountains</option>
-            <option value="Castles">Castles</option>
-            <option value="Amazing pools">Amazing pools</option>
-            <option value="Camping">Camping</option>
-            <option value="Farms">Farms</option>
-            <option value="Arctic">Arctic</option>
-            <option value="Domes">Domes</option>
-            <option value="Boats">Boats</option>
+            <%const categories = [ "Rooms", "Lakefront", "Mansions", "Farms" ,
+            "A-frames", "Ski-in", "Desert", "Beach", "Iconic cities",
+            "Mountains", "Castles", "Amazing pools", "Camping", "Earth homes",
+            "Arctic", "Domes", "Boats" ]; %> <% categories.forEach(category => {
+            %>
+            <option value="<%= category %>"><%= category %></option>
+            <% }); %>
           </select>
           <div class="invalid-feedback">Please select a valid category.</div>
         </div>
 
-        <!-- Price and Country -->
         <div class="row">
           <div class="col-md-6 mb-4">
             <label for="price" class="form-label fw-semibold">Price</label>
@@ -106,7 +98,6 @@
           </div>
         </div>
 
-        <!-- Location -->
         <div class="mb-4">
           <label for="location" class="form-label fw-semibold">Location</label>
           <input
@@ -119,7 +110,6 @@
           <div class="invalid-feedback">Please provide a valid location.</div>
         </div>
 
-        <!-- Submit Button -->
         <div class="text-center">
           <button class="btn btn-primary btn-md shadow-sm" type="submit">
             Add Listing

@@ -2,7 +2,6 @@
 
 <div class="container-fluid px-4 py-5">
   <div class="row">
-    <!-- Header Section -->
     <div class="col-12 mb-4">
       <h2 class="display-5 fw-bold mb-2"><%= listing.title %></h2>
       <div class="d-flex align-items-center gap-3">
@@ -16,39 +15,18 @@
       </div>
     </div>
 
-    <!-- Image Gallery Section -->
     <div class="col-12 mb-5">
       <div class="image-gallery rounded-4 overflow-hidden">
-        <div class="row g-2">
-          <div class="col-12 col-md-6">
-            <img
-              src="<%= listing.image.url %>"
-              class="w-100 h-100 object-fit-cover main-gallery-img"
-              style="max-height: 500px"
-              alt="Main listing image"
-            />
-          </div>
-          <div class="col-12 col-md-6">
-            <div class="row g-2">
-              <% for(let i = 1; i <= 4; i++) { %>
-              <div class="col-6">
-                <img
-                  src="<%= listing.image.url %>"
-                  class="w-100 h-100 object-fit-cover gallery-img"
-                  style="height: 245px"
-                  alt="Side image <%= i %>"
-                />
-              </div>
-              <% } %>
-            </div>
-          </div>
-        </div>
+        <img
+          src="<%= listing.image.url %>"
+          class="w-100 object-fit-cover main-gallery-img"
+          style="max-height: 600px"
+          alt="Listing image"
+        />
       </div>
     </div>
 
-    <!-- Main Content Section -->
     <div class="row">
-      <!-- Left Column - Details -->
       <div class="col-12 col-lg-7 mb-4">
         <div class="mb-4">
           <h3 class="fs-4 mb-4">About this place</h3>
@@ -74,10 +52,7 @@
         </div>
         <% } %>
 
-        <!-- Reviews Section -->
         <div class="reviews-section">
-          <h3 class="fs-4 mb-4">Reviews</h3>
-
           <% if(currUser) { %>
           <div class="add-review-card bg-light p-4 rounded-3 mb-4">
             <h5 class="mb-3">Leave a Review</h5>
@@ -109,8 +84,9 @@
                   <label
                     for="first-rate<%= i %>"
                     title="<%= ['Terrible', 'Not good', 'Average', 'Very good', 'Amazing'][i-1] %>"
-                    ><%= i %> star<%= i !== 1 ? 's' : '' %></label
                   >
+                    <%= i %> star<%= i !== 1 ? 's' : '' %>
+                  </label>
                   <% } %>
                 </fieldset>
               </div>
@@ -132,6 +108,7 @@
           </div>
           <% } %> <% if(listing.reviews.length > 0) { %>
           <div class="reviews-list">
+            <h3 class="fs-4 mb-4">Reviews</h3>
             <% for(review of listing.reviews) { %>
             <div class="review-card bg-light p-4 rounded-3 mb-3">
               <div
@@ -144,7 +121,7 @@
                     data-rating="<%= review.rating %>"
                   ></p>
                 </div>
-                <% if(currUser) { %>
+                <% if(currUser && review.author._id.equals(currUser._id)) { %>
                 <form
                   method="POST"
                   action="/listings/reviews/<%= listing._id %>/<%= review._id %>?_method=DELETE"
@@ -180,20 +157,155 @@
                 <div class="col-6">
                   <div class="p-3 border rounded-3">
                     <small class="text-muted d-block">CHECK-IN</small>
-                    <strong><%= checkin %></strong>
+                    <input
+                      type="date"
+                      id="checkin"
+                      class="border-0 p-0"
+                      value="<%= checkin %>"
+                    />
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="p-3 border rounded-3">
                     <small class="text-muted d-block">CHECK-OUT</small>
-                    <strong><%= checkout %></strong>
+                    <input
+                      type="date"
+                      id="checkout"
+                      class="border-0 p-0"
+                      value="<%= checkout %>"
+                    />
                   </div>
                 </div>
               </div>
 
-              <a href="/listings/<%= listing._id %>" class="d-grid">
-                <button class="btn btn-dark btn-lg">Reserve</button>
-              </a>
+              <div class="guests-dropdown mb-4">
+                <div
+                  class="p-3 border rounded-3"
+                  onclick="toggleGuestsDropdown()"
+                >
+                  <small class="text-muted d-block">GUESTS</small>
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <span id="guestSummary">1 guest</span>
+                    <i class="fas fa-chevron-down"></i>
+                  </div>
+                </div>
+
+                <div
+                  id="guestsMenu"
+                  class="border rounded-3 p-4 mt-2"
+                  style="display: none"
+                >
+                  <div class="guest-type mb-4">
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <div>
+                        <h6 class="mb-1">Adults</h6>
+                        <small class="text-muted">Age 13+</small>
+                      </div>
+                      <div class="d-flex align-items-center gap-3">
+                        <button
+                          class="btn btn-outline-dark btn-sm"
+                          onclick="updateGuests('adults', -1)"
+                        >
+                          -
+                        </button>
+                        <span id="adultsCount">1</span>
+                        <button
+                          class="btn btn-outline-dark btn-sm"
+                          onclick="updateGuests('adults', 1)"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="guest-type mb-4">
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <div>
+                        <h6 class="mb-1">Children</h6>
+                        <small class="text-muted">Ages 2-12</small>
+                      </div>
+                      <div class="d-flex align-items-center gap-3">
+                        <button
+                          class="btn btn-outline-dark btn-sm"
+                          onclick="updateGuests('children', -1)"
+                        >
+                          -
+                        </button>
+                        <span id="childrenCount">0</span>
+                        <button
+                          class="btn btn-outline-dark btn-sm"
+                          onclick="updateGuests('children', 1)"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="guest-type">
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <div>
+                        <h6 class="mb-1">Infants</h6>
+                        <small class="text-muted">Under 2</small>
+                      </div>
+                      <div class="d-flex align-items-center gap-3">
+                        <button
+                          class="btn btn-outline-dark btn-sm"
+                          onclick="updateGuests('infants', -1)"
+                        >
+                          -
+                        </button>
+                        <span id="infantsCount">0</span>
+                        <button
+                          class="btn btn-outline-dark btn-sm"
+                          onclick="updateGuests('infants', 1)"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="price-breakdown mb-4">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-2"
+                >
+                  <span
+                    >₹<%= listing.price %> ×
+                    <span id="nightCount">0</span> nights</span
+                  >
+                  <span id="subtotal">₹0</span>
+                </div>
+                <div
+                  class="d-flex justify-content-between align-items-center mb-2"
+                >
+                  <span>Cleaning fee</span>
+                  <span>₹350</span>
+                </div>
+                <hr />
+                <div class="d-flex justify-content-between align-items-center">
+                  <strong>Total before taxes</strong>
+                  <strong id="total">₹0</strong>
+                </div>
+              </div>
+
+              <button
+                class="btn btn-danger btn-lg w-100"
+                onclick="handleReserve()"
+              >
+                Reserve
+              </button>
               <p class="text-center text-muted small mt-3 mb-0">
                 You won't be charged yet
               </p>
@@ -205,6 +317,125 @@
   </div>
 </div>
 
+<script>
+  let guestCounts = {
+    adults: 1,
+    children: 0,
+    infants: 0,
+  };
+
+  function toggleGuestsDropdown() {
+    const menu = document.getElementById("guestsMenu");
+    menu.style.display = menu.style.display === "none" ? "block" : "none";
+  }
+
+  function updateGuests(type, change) {
+    const currentCount = guestCounts[type];
+    if (currentCount + change >= 0 && currentCount + change <= 4) {
+      guestCounts[type] = currentCount + change;
+      document.getElementById(`${type}Count`).textContent = guestCounts[type];
+      updateGuestSummary();
+    }
+  }
+
+  function updateGuestSummary() {
+    const total = guestCounts.adults + guestCounts.children;
+    const infantText =
+      guestCounts.infants > 0
+        ? `, ${guestCounts.infants} infant${guestCounts.infants > 1 ? "s" : ""}`
+        : "";
+    document.getElementById("guestSummary").textContent = `${total} guest${
+      total > 1 ? "s" : ""
+    }${infantText}`;
+  }
+
+  function calculatePricing() {
+    const checkin = new Date(document.getElementById("checkin").value);
+    const checkout = new Date(document.getElementById("checkout").value);
+
+    // Only calculate if both dates are valid
+    if (checkin && checkout && checkout > checkin) {
+      const nights = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
+      const pricePerNight = <%= listing.price %>;
+
+      const subtotal = pricePerNight * nights;
+      const cleaningFee = 350;
+      const total = subtotal + cleaningFee;
+
+      document.getElementById("nightCount").textContent = nights;
+      document.getElementById(
+        "subtotal"
+      ).textContent = `₹${subtotal.toLocaleString("en-IN")}`;
+      document.getElementById("total").textContent = `₹${total.toLocaleString(
+        "en-IN"
+      )}`;
+    } else {
+      // Reset displays if dates are invalid
+      document.getElementById("nightCount").textContent = "0";
+      document.getElementById("subtotal").textContent = "₹0";
+      document.getElementById("total").textContent = "₹0";
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const checkinInput = document.getElementById("checkin");
+    const checkoutInput = document.getElementById("checkout");
+
+    // Format dates as YYYY-MM-DD
+    checkinInput.value = today.toISOString().split("T")[0];
+    checkoutInput.value = tomorrow.toISOString().split("T")[0];
+
+    // Set min dates to prevent past date selection
+    checkinInput.min = today.toISOString().split("T")[0];
+    checkoutInput.min = tomorrow.toISOString().split("T")[0];
+
+    calculatePricing();
+  });
+
+  // Add event listeners
+  document.getElementById("checkin").addEventListener("change", function (e) {
+    // Update checkout min date when checkin changes
+    const checkinDate = new Date(e.target.value);
+    const nextDay = new Date(checkinDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+
+    const checkoutInput = document.getElementById("checkout");
+    checkoutInput.min = nextDay.toISOString().split("T")[0];
+
+    // If checkout is now before checkin, update it
+    if (new Date(checkoutInput.value) <= checkinDate) {
+      checkoutInput.value = nextDay.toISOString().split("T")[0];
+    }
+
+    calculatePricing();
+  });
+
+  document
+    .getElementById("checkout")
+    .addEventListener("change", calculatePricing);
+
+  // Initialize price calculation on page load
+  calculatePricing();
+
+  function handleReserve() {
+    alert("Reservation functionality will be implemented here");
+  }
+
+  // Close guests dropdown when clicking outside
+  document.addEventListener("click", function (event) {
+    const dropdown = document.getElementById("guestsMenu");
+    const trigger = event.target.closest(".guests-dropdown");
+
+    if (!trigger && dropdown.style.display === "block") {
+      dropdown.style.display = "none";
+    }
+  });
+</script>
+
 <style>
   .image-gallery img {
     transition: opacity 0.3s;
@@ -212,10 +443,6 @@
 
   .image-gallery img:hover {
     opacity: 0.9;
-  }
-
-  .gallery-img {
-    cursor: pointer;
   }
 
   .booking-card {
@@ -227,13 +454,33 @@
       max-height: 300px !important;
     }
 
-    .gallery-img {
-      height: 150px !important;
-    }
-
     .booking-card {
       position: static !important;
     }
+  }
+
+  .guests-dropdown {
+    position: relative;
+  }
+
+  #guestsMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  input[type="date"] {
+    outline: none;
+  }
+
+  .btn-outline-dark:hover {
+    background-color: #f8f9fa;
+    color: #212529;
+    border-color: #212529;
   }
 
   .review-card {
@@ -242,9 +489,5 @@
 
   .review-card:hover {
     transform: translateY(-2px);
-  }
-
-  .btn {
-    transition: all 0.3s;
   }
 </style>
