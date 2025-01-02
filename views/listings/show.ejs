@@ -17,12 +17,13 @@
 
     <div class="col-12 mb-5">
       <div class="image-gallery rounded-4 overflow-hidden">
-        <img
-          src="<%= listing.image.url %>"
-          class="w-100 object-fit-cover main-gallery-img"
-          style="max-height: 600px"
-          alt="Listing image"
-        />
+        <div class="gallery-container">
+          <img
+            src="<%= listing.image.url %>"
+            class="gallery-img"
+            alt="Listing image"
+          />
+        </div>
       </div>
     </div>
 
@@ -109,33 +110,35 @@
           <% } %> <% if(listing.reviews.length > 0) { %>
           <div class="reviews-list">
             <h3 class="fs-4 mb-4">Reviews</h3>
-            <% for(review of listing.reviews) { %>
-            <div class="review-card bg-light p-4 rounded-3 mb-3">
-              <div
-                class="d-flex justify-content-between align-items-start mb-2"
-              >
-                <div>
-                  <h6 class="mb-1">@<%= review.author.username %></h6>
-                  <p
-                    class="starability-result"
-                    data-rating="<%= review.rating %>"
-                  ></p>
-                </div>
-                <% if(currUser && review.author._id.equals(currUser._id)) { %>
-                <form
-                  method="POST"
-                  action="/listings/reviews/<%= listing._id %>/<%= review._id %>?_method=DELETE"
-                  class="d-inline"
+            <div class="reviews-container">
+              <% for(review of listing.reviews) { %>
+              <div class="review-card bg-light p-4 rounded-3 mb-3">
+                <div
+                  class="d-flex justify-content-between align-items-start mb-2"
                 >
-                  <button class="btn btn-sm btn-outline-danger">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </form>
-                <% } %>
+                  <div>
+                    <h6 class="mb-1">@<%= review.author.username %></h6>
+                    <p
+                      class="starability-result"
+                      data-rating="<%= review.rating %>"
+                    ></p>
+                  </div>
+                  <% if(currUser && review.author._id.equals(currUser._id)) { %>
+                  <form
+                    method="POST"
+                    action="/listings/reviews/<%= listing._id %>/<%= review._id %>?_method=DELETE"
+                    class="d-inline"
+                  >
+                    <button class="btn btn-sm btn-outline-danger">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </form>
+                  <% } %>
+                </div>
+                <p class="mb-0"><%= review.comment %></p>
               </div>
-              <p class="mb-0"><%= review.comment %></p>
+              <% } %>
             </div>
-            <% } %>
           </div>
           <% } %>
         </div>
@@ -156,24 +159,28 @@
               <div class="date-picker row g-2 mb-4">
                 <div class="col-6">
                   <div class="p-3 border rounded-3">
-                    <small class="text-muted d-block">CHECK-IN</small>
-                    <input
-                      type="date"
-                      id="checkin"
-                      class="border-0 p-0"
-                      value="<%= checkin %>"
-                    />
+                    <small class="text-muted d-block mb-1">CHECK-IN</small>
+                    <div class="date-input-wrapper">
+                      <input
+                        type="date"
+                        id="checkin"
+                        class="date-input"
+                        value="<%= checkin %>"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="p-3 border rounded-3">
-                    <small class="text-muted d-block">CHECK-OUT</small>
-                    <input
-                      type="date"
-                      id="checkout"
-                      class="border-0 p-0"
-                      value="<%= checkout %>"
-                    />
+                    <small class="text-muted d-block mb-1">CHECK-OUT</small>
+                    <div class="date-input-wrapper">
+                      <input
+                        type="date"
+                        id="checkout"
+                        class="date-input"
+                        value="<%= checkout %>"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -437,25 +444,46 @@
 </script>
 
 <style>
-  .image-gallery img {
-    transition: opacity 0.3s;
+  .gallery-container {
+    width: 100%;
+    position: relative;
+    padding-top: 56.25%;
   }
 
-  .image-gallery img:hover {
-    opacity: 0.9;
+  .gallery-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
   }
 
-  .booking-card {
-    transition: transform 0.3s;
+  .gallery-img:hover {
+    transform: scale(1.01);
   }
 
   @media (max-width: 768px) {
-    .main-gallery-img {
-      max-height: 300px !important;
+    .gallery-container {
+      padding-top: 75%;
     }
+  }
 
-    .booking-card {
-      position: static !important;
+  @media (min-width: 769px) and (max-width: 1200px) {
+    .gallery-container {
+      padding-top: 60%;
+    }
+  }
+
+  .gallery-img {
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
     }
   }
 
@@ -477,17 +505,113 @@
     outline: none;
   }
 
+  .date-input-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .date-input {
+    border: none;
+    padding: 0;
+    width: 100%;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #212529;
+    cursor: pointer;
+  }
+
+  .date-input::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+
+  .date-input {
+    height: 24px;
+    line-height: 24px;
+  }
+
+  @media (max-width: 576px) {
+    .date-input {
+      font-size: 0.875rem;
+    }
+
+    .p-3 {
+      padding: 0.75rem !important;
+    }
+  }
+
   .btn-outline-dark:hover {
     background-color: #f8f9fa;
     color: #212529;
     border-color: #212529;
   }
 
+  .reviews-container {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+  }
+
+  .reviews-container::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .reviews-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  .reviews-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+
+  .reviews-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  @media (max-width: 768px) {
+    .reviews-container {
+      max-height: none;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      padding-bottom: 10px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .reviews-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .review-card {
+      display: inline-block;
+      width: 300px;
+      white-space: normal;
+      vertical-align: top;
+      margin-right: 16px;
+    }
+
+    .review-card:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .reviews-container {
+    scroll-behavior: smooth;
+  }
+
   .review-card {
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
   }
 
   .review-card:hover {
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 </style>

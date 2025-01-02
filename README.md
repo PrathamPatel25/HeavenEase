@@ -87,7 +87,7 @@ Create a `.env` file in the root directory and add the necessary environment var
 Start the development server:
 
 ```bash
-npm start
+nodemon run app.js
 ```
 
 Access the app at `http://localhost:8080`.
@@ -114,5 +114,4 @@ SECRET=your_secret_key
 
 For any queries or feedback, please reach out:
 
-- **Email**: prathampatel5044@gmail.com
 - **LinkedIn**: [Profile](https://www.linkedin.com/in/pratham-patel-0920-/)
